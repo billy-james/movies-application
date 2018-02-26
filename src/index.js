@@ -35,7 +35,7 @@ function fetchNBuild(movieObj)
 
 $("#addMovie").click((e) => {
     e.preventDefault();
-    const movie = {title: $("#newMovie").val(), rating: $("#rating").val(), id: " "};
+    const movie = {title: $("#newMovie").val(), rating: $("#rating").val(), id: ""};
     console.log(movie);
         fetchNBuild(movie);
         $("#newMovie").val("");
@@ -59,26 +59,31 @@ function removeMovie(id) {
     };
 
     fetch(url, options)
-        .then(response => response.json())
+        .then((data) => getMovies())
+        .then(movies => {
+            let movieHTML = "<ul>";
+            movies.forEach(({title, rating, id}) => {
+                movieHTML +=
+                    `
+          <li>${title} - rating: ${rating}
+             <button type="button" class="btn-danger delete" data-attribute=${id}>Delete</button>
+         </li>
+          `;
+            });
+            movieHTML += "</ul>";
+            renderMovies.innerHTML = movieHTML;
+        })
         .catch(error => console.log(error))
 
 }
 
-
-// $("#delete-btn").click((e) => {
-//     e.preventDefault();
-//     const movie = {title: $("#newMovie").val(), rating: $("#rating").val(), id: ""};
-//     console.log(movie);
-//     removeMovie(movie);
-//
-// });
 
 getMovies().then((movies) => {
   console.log('Here are all the movies:');
   console.log(movies);
 
   let movieHTML = "<ul>";
-  movies.forEach(({title, rating}, id) => {
+  movies.forEach(({title, rating, id}) => {
 
       movieHTML +=
           ` 
@@ -95,7 +100,7 @@ getMovies().then((movies) => {
     });
 
     $(".delete").on("click", function(e){
-        ($(this).removeAttr("data-id"));
+        removeMovie($(this).attr("data-attribute"));
 
     });
 })
@@ -106,7 +111,3 @@ getMovies().then((movies) => {
 });
 
 
-
-// $("#delete-btn").on("click", function(){
-//     $(this).closest("ul").remove();
-// });
