@@ -1,7 +1,7 @@
 const $ = require("jquery");
 const {getMovies} = require('./api.js');
 const addBtn = $("#add-movie-btn");
-const deleteBtn = $("#delete-btn");
+const deleteBtn = $("#btn-delete");
 let renderMovies = document.getElementById("movie-title");
 
 function fetchNBuild(movieObj)
@@ -18,11 +18,11 @@ function fetchNBuild(movieObj)
         .then((data) => getMovies())
         .then(movies => {
             let movieHTML = "<ul>";
-            movies.forEach(({title, rating}, i) => {
+            movies.forEach(({title, rating, id}) => {
                 movieHTML +=
-                    ` 
+                    `
           <li>${title} - rating: ${rating}
-             <button id="delete-btn" type="button" class="btn-danger">Delete</button>
+             <button type="button" class="btn-danger delete" data-attribute=${id}>Delete</button>
          </li>
           `;
             });
@@ -35,11 +35,11 @@ function fetchNBuild(movieObj)
 
 $("#addMovie").click((e) => {
     e.preventDefault();
-    const movie = {title: $("#newMovie").val(), rating: $("#rating").val(), id: ""};
+    const movie = {title: $("#newMovie").val(), rating: $("#rating").val(), id: " "};
     console.log(movie);
         fetchNBuild(movie);
         $("#newMovie").val("");
-        $("#rating").val("2");
+        $("#rating").val("1");
 });
 
 
@@ -47,36 +47,57 @@ $("#addMovie").click((e) => {
     // console.log the data-target of the delete button you click on - make sure you get the right ID!
     // save that data-target id to a variable called ID inside of the delete movie function
     // make a fetch request where the METHOD is DELETE and the url is api/movies/id
-    function deleteMovie(id) {
-        const options = {
-            method: 'DELETE',
 
-        };
-        fetch(`/api/movies/${id}`, options)
-            .then((data => getMovies())
-            .catch(error => console.log(error));
+function removeMovie(id) {
+    const url = `/api/movies/${id}`;
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
 
-    }
-    fetchNBuild();
+    };
+
+    fetch(url, options)
+        .then(response => response.json())
+        .catch(error => console.log(error))
+
 }
 
+
+// $("#delete-btn").click((e) => {
+//     e.preventDefault();
+//     const movie = {title: $("#newMovie").val(), rating: $("#rating").val(), id: ""};
+//     console.log(movie);
+//     removeMovie(movie);
+//
+// });
 
 getMovies().then((movies) => {
   console.log('Here are all the movies:');
   console.log(movies);
 
   let movieHTML = "<ul>";
-  movies.forEach(({title, rating}, i) => {
+  movies.forEach(({title, rating}, id) => {
 
       movieHTML +=
           ` 
           <li>${title} - rating: ${rating}
-             <button id="delete-btn" type="button" class="btn-danger">Delete</button>
+             <button type="button" class="btn-danger delete" data-attribute=${id}>Delete</button>
          </li>
           `;
-  })
+  });
     movieHTML += "</ul>";
     renderMovies.innerHTML = movieHTML;
+
+    addBtn.click( (e) => {
+        addoredit(e, "add");
+    });
+
+    $(".delete").on("click", function(e){
+        ($(this).removeAttr("data-id"));
+
+    });
 })
 
   .catch((error) => {
@@ -84,10 +105,8 @@ getMovies().then((movies) => {
   console.log(error);
 });
 
-addBtn.click( (e) => {
-    addoredit(e, "add");
-});
 
-$("#delete-btn").on("click", function(){
-    $(this).closest("ul").remove();
-});
+
+// $("#delete-btn").on("click", function(){
+//     $(this).closest("ul").remove();
+// });
