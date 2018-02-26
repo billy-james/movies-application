@@ -9,13 +9,13 @@
 
 <div id="loader"></div>
 
-<div style="display:none;" id="myDiv" class="animate-bottom">
+<div style="display:none;" id="myDiv" class="header">
+    <h2>Movie's Title</h2>
+    <input id="newMovie"  placeholder="Enter Title...">
+    <span id="addMovie" class="addBtn">Add</span>
     <div>
         <form>
-
-            <label>Movie's Title</label>
-            <input id="newMovie" name="username" type="text">
-            <br>
+            <label for="rating" ></label>
 
             <select id="rating" name="rating_select">
                 <option value="rating-1">Rating 1</option>
@@ -24,15 +24,12 @@
                 <option value="rating-4">Rating 4</option>
                 <option value="rating-5">Rating 5</option>
             </select>
-
-            <input id="addMovie" type="submit">
+            <ul id="movie-title">
+                 <li></li>
+            </ul>
         </form>
     </div>
 
-<div>
-    <p id="movie-title"></p>
-
-</div>
     <script src="/main.js"></script>
 </div>
 <script>
@@ -46,6 +43,7 @@
         document.getElementById("loader").style.display = "none";
         document.getElementById("myDiv").style.display = "block";
     }
+
 </script>
 </body>
 </html>

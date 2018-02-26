@@ -16,29 +16,22 @@
       "id": 3
     },
     {
-      "title": "Sharknado",
-      "rating": "rating-5",
       "id": 4
     },
     {
-      "title": "Bright",
-      "rating": "rating-2",
+      "title": "spiderman",
+      "rating": "rating-1",
       "id": 5
     },
     {
-      "title": "Matrix",
-      "rating": "rating-5",
+      "title": "spiderman",
+      "rating": "rating-1",
       "id": 6
     },
     {
-      "title": "Test",
-      "rating": "rating-3",
+      "title": "spiderman",
+      "rating": "rating-1",
       "id": 7
-    },
-    {
-      "title": "test",
-      "rating": "rating-3",
-      "id": 8
     }
   ]
 }
